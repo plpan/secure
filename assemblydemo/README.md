@@ -1,13 +1,33 @@
-### assembly examples for x86 in AT&T style
+### 汇编知识
 
-1. run it
-	- gcc -m32 -gstabs -c -o demo.o demo.s (assembly)
-		- -gstabs: enable debugging symbols in object-file (to debug in GDB)
-		- if you are using as, then [ as --32 -o demo demo.s ]
-	- gcc -m32 -nostdlib -lc -o demo demo.o (link)
-		- -nostdlib: do not link with the standard libraries (if not, _start will be already defined)
-		- -lc: link with libc ( get exit symbol defined)
-	- ./demo (run it)
+1. 伪指令
+	- 汇编程序中以.开头的名称不是指令助记符，因此不会翻译成机器指令，他们被称之为伪指令，因为不是真正的指令
+		- .section：将汇编代码划分成好几个段，程序被操作系统加载时，每个段会被加载到不同的地址，具备不同的r, w, x权限
+			- .data：数据段，可读可写
+				- 全局变量也保存在这个段内
+			- .text：代码段，可读可执行
+		- .globl：告诉汇编器，后面的这个符号要被链接器用到。
 
-2. Reference
-	- http://www.bth.se/people/ska/ia32_examples.html
+2. _start
+	- _start是一个符号，代表一个地址，可以用在指令中。汇编程序经过汇编器处理之后，会把所有的符号替换成对应的地址值。
+		- 变量会被替换为内存地址值
+		- 函数会被替换为第一条指令的值
+	_ _start函数和C程序中的main函数一样特殊，是整个汇编程序的入口。也即_start符号后的第一条指令就是整个程序的第一条指令
+
+3. 汇编语法
+	- Intel语法
+		- Intel官方及Windows使用语法
+		- mov ebx, eax   # 将eax的值赋给ebx [注意寄存器前没有%前缀，且寄存器位置相反]
+	- AT&T语法
+		- Unix使用语法
+		- mov %eax, %ebx # 将eax的值赋给ebx
+		- 我们这里使用的都是AT&T语法格式
+
+3. [指令举例]数据转移指令
+	- 通过具体的汇编指令来解释其含义
+	- movl $1, %eax
+		- l代表long，表示32位机器指令
+		- 数据表示有具体的格式，以便和符号进行区分
+			- 立即数用$前缀表示
+			- 寄存器用%前缀表示3. 指令
+	- 因此，这条指令的含义就是：将立即数1放置到32位寄存器eax中
