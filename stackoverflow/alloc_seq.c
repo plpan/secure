@@ -1,6 +1,6 @@
 int func(int a, int b, int c) {
-    int d[2] = {1};
-    int e[3] = {2};
+    char d[2] = {'1'};
+    char e[3] = {'2'};
     return 0;
 }
 
