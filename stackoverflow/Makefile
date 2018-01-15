@@ -8,6 +8,7 @@ seq:
 over:
 	gcc -m32 -fno-stack-protector -S alloc_overflow.c
 
+# 一定要加 -fno-stack-protector 选项，gcc默认开启堆栈保护技术，会防止返回地址被改写
 write:
 	gcc -m32 -fno-stack-protector -S alloc_overwrite.c
 
